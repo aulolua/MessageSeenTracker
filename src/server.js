@@ -10,7 +10,7 @@ const server = http.createServer((req, res) => {
   console.log(req.url,req.socket.remoteFamily,req.socket.remoteAddress,req.socket.remotePort)
   res.writeHead(200, { 'Content-Type': 'application/json' });
   res.end(JSON.stringify({
-    data: 'Hello World!',
+    url: 'https://*.trycloudflare.com',
   }));
 });
 
@@ -24,4 +24,4 @@ process.on('SIGTERM', () => (console.log("\nReceived SIGTERM signal. Exiting gra
 process.on('uncaughtException', (error) => (console.error("Uncaught Exception. Exiting...", error), cleanup(), process.exit(1)));
 process.on('unhandledRejection', (reason, promise) => (console.error("Unhandled Promise Rejection. Exiting...", reason), cleanup(), process.exit(1)));
 
-server.listen(8000);
+server.listen(4070);
