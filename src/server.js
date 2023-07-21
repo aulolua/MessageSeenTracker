@@ -13,7 +13,8 @@ const server = http.createServer((req, res) => {
 });
 
 function cleanup() {
-    //
+    fs.rmSync('./tmp.log')
 }
+
 
 server.listen(8000);
