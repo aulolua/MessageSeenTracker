@@ -1,5 +1,6 @@
 const http = require('http');
 const fs = require('fs');
+const cf = require('./cloudflare');
 
 if (fs.existsSync('./tmp.log')) return console.log('already running');
 
