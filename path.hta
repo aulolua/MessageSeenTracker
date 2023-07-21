@@ -1,1 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Get Current Path in HTA</title>
+  <hta:application id="app" scroll="no" singleinstance="yes" />
+  <script type="text/vbscript">
+    Sub GetCurrentPath
+      Dim path
+      path = Document.Location.Href
+      MsgBox "Current path: " & path
+    End Sub
+  </script>
+</head>
+<body>
+  <button onclick="GetCurrentPath">Get Current Path</button>
+</body>
+</html>
+
 
