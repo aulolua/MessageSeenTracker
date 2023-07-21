@@ -3,7 +3,7 @@ const fs = require('fs');
 
 if (fs.existsSync('./tmp.log')) return console.log('already running');
 
-fs.writeFileSync('./tmp.log');
+fs.writeFileSync('./tmp.log','');
 
 const server = http.createServer((req, res) => {
   console.log(req.url,req.socket.remoteFamily,req.socket.remoteAddress,req.socket.remotePort)
