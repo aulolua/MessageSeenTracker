@@ -16,5 +16,10 @@ function cleanup() {
     fs.rmSync('./tmp.log')
 }
 
+process.on('exit', (code) => (cleanup(), console.log(`Process is exiting with code ${code}`)));
+process.on('SIGINT', () => (console.log("\nReceived SIGINT signal. Exiting gracefully..."), process.exit(0)));
+process.on('SIGTERM', () => (console.log("\nReceived SIGTERM signal. Exiting gracefully..."), process.exit(0)));
+process.on('uncaughtException', (error) => (console.error("Uncaught Exception. Exiting...", error), cleanup(), process.exit(1)));
+process.on('unhandledRejection', (reason, promise) => (console.error("Unhandled Promise Rejection. Exiting...", reason), cleanup(), process.exit(1)));
 
 server.listen(8000);
