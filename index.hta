@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Discord Message Read Checker</title>
+  <hta:application id="app" scroll="no" singleinstance="yes" border="thin"
+  borderstyle="normal"
+  caption="yes"
+  contextmenu="yes"
+  icon=""
+  maximizebutton="yes"
+  minimizebutton="yes"
+  navigable="yes"
+  scroll="no"
+  selection="no"
+  showintaskbar="yes"
+  singleinstance="yes"
+  sysmenu="yes"
+  windowstate="normal"
+  resizable="no">
+  <style type="text/css">
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #1d1d1d; /* Dark mode background color */
+      color: #f0f0f0; /* Dark mode text color */
+      margin: 0;
+      padding: 0;
+      overflow: hidden; /* Hide scrollbars */
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      min-width: 100vh;
+      max-height: 100vh;
+      max-width: 100vh;
+    }
+
+    h1 {
+      color: #3498db;
+    }
+
+    #content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      margin-top: 30px; /* Center the content */
+    }
+
+    #filePicker {
+      padding: 10px 20px;
+      background-color: #3498db; /* Blue button color */
+      color: #ffffff; /* Button text color */
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    #fileInput {
+      display: none;
+    }
+
+    #runButton {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #27ae60; /* Green button color */
+      color: #ffffff; /* Button text color */
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    #messageDiv {
+      bottom: 0;
+      width: 100%;
+      background-color: #282828; /* Dark mode footer background color */
+      padding: 10px;
+      color: #f0f0f0; /* Footer text color */
+      font-size: 14px; /* Adjust font size */
+      line-height: 1.5; /* Adjust line height to prevent content overlap */
+      border: 2px solid #3498db; /* Blue border color */
+      border-radius: 2px; /* Rounded corners */
+      transition: box-shadow 0.3s, border-color 0.3s; /* Transition for the glowing effect */
+      flex-shrink: 0;
+    }
+    #messageDiv p {
+      margin: 5px 0; /* Adjust margin to separate paragraphs */
+    }
+    #messageDiv a {
+      color: #3498db; /* Link color */
+    }
+    #messageDiv:hover {
+      border-color: #1a6bbd; /* Darker blue border on hover */
+      box-shadow: 0 0 10px #1a6bbd; /* Box shadow on hover */
+    }
+  </style>
+  <script type="text/vbscript">
+    Sub PickImage
+      document.getElementById("fileInput").click
+    End Sub
+
+    Sub RunCommand
+      Dim imagePath
+      imagePath = document.getElementById("fileInput").value
+      If Trim(imagePath) = "" Then
+        MsgBox "Please select an image before running the command.", vbExclamation
+        Exit Sub
+      End If
+
+      Dim command
+      command = "node server.js """ & imagePath & """"
+
+      Dim shell
+      Set shell = CreateObject("WScript.Shell")
+      shell.Run "cmd /c start node cloudflare.js", 0, True
+      shell.Run command, 0, True
+    End Sub
+  </script>
+  <script type="text/javascript">
+    // Set the window size with a 1:2 height-to-width ratio
+    function openCustomDialog(n) {
+      var sh = new ActiveXObject('WScript.Shell');
+      sh.Run("mshta http://localhost:4072")
+    }
+
+    window.resizeTo(350,400);
+    function parse(str) {
+      var regex = /cloudflared_tunnel_user_hostnames_counts{userHostname="([^"]+)"/
+      var url = str.split('cloudflared_tunnel_user_hostnames_counts{userHostname="')[1].split('"')[0];
+      prompt('URL To Share',url);
+    };
+    function geturl() {
+      var xhr = new ActiveXObject("Microsoft.XMLHTTP");
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            // Handle the response data here
+            var response = xhr.responseText;
+            parse(response);
+            //prompt('URL',parse(response))
+            //alert(response)
+          } else {
+            alert("Request failed with status: " + xhr.status);
+          }
+        }
+      };
+      xhr.open("GET", "http://localhost:4071/metrics", true);
+      xhr.send();
+    };
+    function runboth() {
+      setTimeout(geturl,5000);
+      openCustomDialog()
+      window.execScript('RunCommand()')
+    }
+  </script>
+</head>
+<body>
+  <div id="content">
+    <h1>Discord Message Read Checker</h1>
+    <form>
+      <input type="file" id="fileInput" accept="image/*" style="display: none;">
+    </form>
+    <br>
+    <button onclick="vbscript:PickImage()" id="filePicker">Pick an Image</button>
+    <br>
+    <button onclick="runboth()" id="runButton">Run Command</button>
+  </div>
+  <br>
+  <br>
+  <div id="messageDiv">
+  <p>Developed by <a href="https://github.com/aulolua">Aulolua</a> and <a href="https://github.com/janmakur">Janmakur</a></p>
+    <p><a href="https://github.com/aulolua/discmsgchkr">https://github.com/aulolua/discmsgchkr</a></p>
+  </div>
+</body>
+</html>
