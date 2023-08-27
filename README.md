@@ -1,4 +1,4 @@
-# MessageSeenTracker
+# [MessageSeenTracker](https://github.com/aulolua/MessageSeenTracker)
 
 ![GitHub](https://img.shields.io/github/license/aulolua/MessageSeenTracker)
 
